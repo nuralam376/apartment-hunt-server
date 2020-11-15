@@ -1,5 +1,3 @@
-const ObjectId = require("mongodb").ObjectID;
-
 module.exports = (app, userCollection) => {
   //request booking
   app.post("/requestBooking", (req, res) => {
@@ -29,5 +27,21 @@ module.exports = (app, userCollection) => {
           return res.send(documents);
         }
       });
+  });
+
+  //Creates new user account
+  app.post("/createAccount", (req, res) => {
+    const { name, email, password } = req.body;
+
+    userCollection
+      .insertOne({
+        name,
+        email,
+        password,
+      })
+      .then((result) => {
+        return res.send(result.insertedCount > 0);
+      })
+      .catch((err) => console.log(err));
   });
 };
