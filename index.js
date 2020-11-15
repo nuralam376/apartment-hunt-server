@@ -32,6 +32,10 @@ client.connect((err) => {
   }
   console.log("Database connected");
   const db = client.db(`${process.env.DB_NAME}`);
+
+  const apartmentCollection = db.collection("apartments");
+
+  require("./routes/apartmentRoutes")(app, apartmentCollection);
 });
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
