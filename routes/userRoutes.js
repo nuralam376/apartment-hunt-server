@@ -3,7 +3,7 @@ const ObjectId = require("mongodb").ObjectID;
 module.exports = (app, userCollection) => {
   //request booking
   app.post("/requestBooking", (req, res) => {
-    const { fullName, phoneNumber, email, message } = req.body;
+    const { fullName, phoneNumber, email, message, status } = req.body;
 
     userCollection
       .insertOne({
