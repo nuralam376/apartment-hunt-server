@@ -37,9 +37,11 @@ client.connect((err) => {
 
   const apartmentCollection = db.collection("apartments");
   const userCollection = db.collection("users");
+  const accountCollection = db.collection("accounts");
 
   require("./routes/apartmentRoutes")(app, apartmentCollection);
   require("./routes/userRoutes")(app, userCollection);
+  require("./routes/accountRoutes")(app, accountCollection);
 });
 
 app.get("/", (req, res) => {
