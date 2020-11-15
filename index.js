@@ -36,8 +36,10 @@ client.connect((err) => {
   const db = client.db(`${process.env.DB_NAME}`);
 
   const apartmentCollection = db.collection("apartments");
+  const userCollection = db.collection("users");
 
   require("./routes/apartmentRoutes")(app, apartmentCollection);
+  require("./routes/userRoutes")(app, userCollection);
 });
 
 app.get("/", (req, res) => {
