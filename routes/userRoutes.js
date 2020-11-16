@@ -42,4 +42,27 @@ module.exports = (app, userCollection) => {
         }
       });
   });
+
+  // Changed order status
+  app.patch("/changeorderstatus", (req, res) => {
+    const { email, status } = req.body;
+
+    userCollection
+      .findOneAndUpdate(
+        { email: email },
+        {
+          $set: {
+            status,
+          },
+        }
+      )
+      .then(() => {
+        userCollection.find({}).toArray((err, documents) => {
+          if (!err) {
+            return res.send(documents);
+          }
+          return res.send(false);
+        });
+      });
+  });
 };
