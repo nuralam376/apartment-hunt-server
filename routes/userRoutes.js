@@ -10,6 +10,7 @@ module.exports = (app, userCollection) => {
         email,
         message,
         status,
+        apartmentId,
       })
       .then((result) => {
         return res.send(result.insertedCount > 0);
@@ -29,19 +30,16 @@ module.exports = (app, userCollection) => {
       });
   });
 
-  //Creates new user account
-  app.post("/createAccount", (req, res) => {
-    const { name, email, password } = req.body;
-
+  // Gets all bookings of an user
+  app.get("/getAllBookings/:email", (req, res) => {
+    const email = req.params.email;
     userCollection
-      .insertOne({
-        name,
-        email,
-        password,
-      })
-      .then((result) => {
-        return res.send(result.insertedCount > 0);
-      })
-      .catch((err) => console.log(err));
+      .find({ email: email })
+      .sort({ _id: -1 })
+      .toArray((err, documents) => {
+        if (!err) {
+          return res.send(documents);
+        }
+      });
   });
 };
