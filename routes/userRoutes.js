@@ -1,3 +1,4 @@
+const ObjectId = require('mongodb').ObjectId;
 module.exports = (app, userCollection) => {
   //request booking
   app.post("/requestBooking", (req, res) => {
@@ -51,25 +52,15 @@ module.exports = (app, userCollection) => {
   });
 
   // Changed order status
-  app.patch("/changeorderstatus", (req, res) => {
-    const { email, status } = req.body;
+  app.patch("/changeorderstatus/:id", (req, res) => {
+    userCollection.updateOne({ _id: ObjectId(req.params.id) },
 
-    userCollection
-      .findOneAndUpdate(
-        { email: email },
-        {
-          $set: {
-            status,
-          },
-        }
-      )
-      .then(() => {
-        userCollection.find({}).toArray((err, documents) => {
-          if (!err) {
-            return res.send(documents);
-          }
-          return res.send(false);
-        });
-      });
-  });
+      {
+        $set: { status: req.body.status }
+      })
+      .then(result => {
+        res.send(result.modifiedCount > 0)
+      })
+  })
+
 };
